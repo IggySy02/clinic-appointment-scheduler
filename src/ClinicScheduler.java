@@ -1,4 +1,4 @@
-
+import java.util.Scanner;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,23 +49,28 @@ public class ClinicScheduler {
     }
     public static void main(String[] args) {
 
-        book("09:00", "Alex");
-        book("10:00", "Sam");
-        book("11:00", "Michael");
+        Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Appointments: " + appointments);
 
-        System.out.println("Patient at 09:00: "
-                + findPatient("09:00"));
+        while (true) {
+            System.out.println("Please enter the time you would like to schedule and appointment: ");
+            String time = scanner.nextLine();
+            System.out.println("Please enter your name: ");
+            String name = scanner.nextLine();
+            boolean succesfull = book(time, name);
+            if (succesfull == true) {
+                System.out.println("Booking successful!");
+            } else {
+                System.out.println("Booking failed!");
+            }
+            System.out.println("Would you like to book another appointment? (Y/N): ")   ;
+            String answer = scanner.nextLine();
+            if (answer.equalsIgnoreCase("N")) {
+                break;
+            }
+        }
+        System.out.println("Appointments booked: " + appointments);
 
-        //cancel("10:00");
 
-        System.out.println("Remaining appointments: "
-                + countAppointments());
-
-        boolean result = reschedule("09:00", "12:00");
-
-        System.out.println(result);
-        System.out.println("Updated schedule: " + appointments);
     }
 }
