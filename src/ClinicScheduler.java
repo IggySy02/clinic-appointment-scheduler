@@ -8,7 +8,7 @@ public class ClinicScheduler {
 
     // Book an appointment
     static boolean book(String time, String patient) {
-        if (appointments.containsKey(time)) {
+        if (!isValidTime(time) || !isWithinClinicHours(time) || appointments.containsKey(time)) {
             return false;
         }
 
@@ -37,9 +37,9 @@ public class ClinicScheduler {
     }
 
     static boolean reschedule(String oldTime, String newTime) {
-        if (appointments.containsKey(oldTime) != true) {
+        if (!isValidTime(oldTime) || !appointments.containsKey(oldTime) ) {
             return false;
-        } else if (appointments.containsKey(newTime)) {
+        } else if (!isValidTime(newTime) || !isWithinClinicHours(newTime) || appointments.containsKey(newTime)) {
             return false;
         }
         String patient = findPatient(oldTime);
@@ -50,6 +50,13 @@ public class ClinicScheduler {
     static boolean isValidTime(String time){
         boolean valid = time.matches("([01][0-9]|2[0-3]):[0-5][0-9]");
         return valid;
+    }
+    static boolean isWithinClinicHours(String time) {
+        boolean allowed = time.compareTo("08:00") >= 0 && time.compareTo("18:00") < 0;
+        return allowed;
+
+
+
     }
     public static void main(String[] args) {
 
@@ -85,6 +92,11 @@ public class ClinicScheduler {
                             if(!isValidTime(time)) {
                                 System.out.println("Invalid input");
                                 continue;
+                            }
+                            else if (!isWithinClinicHours(time)) {
+                                System.out.println("Outside clinic hours! (08:00–18:00)");
+                                continue;
+
                             }
                             System.out.println("Please enter your name: ");
                             String name = scanner.nextLine();
@@ -157,6 +169,10 @@ public class ClinicScheduler {
 
                         if(!isValidTime(time)) {
                             System.out.println("Invalid input");
+                            continue;
+                        } else if (!isWithinClinicHours(time)) {
+
+                            System.out.println("Outside clinic hours! (08:00–18:00)");
                             continue;
                         }
 
