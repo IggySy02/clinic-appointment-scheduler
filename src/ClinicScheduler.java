@@ -47,6 +47,10 @@ public class ClinicScheduler {
         appointments.put(newTime, patient);
         return true;
     }
+    static boolean isValidTime(String time){
+        boolean valid = time.matches("([01][0-9]|2[0-3]):[0-5][0-9]");
+        return valid;
+    }
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
@@ -77,6 +81,11 @@ public class ClinicScheduler {
                         while (true) {
                             System.out.println("Please enter the time you would like to schedule and appointment: ");
                             String time = scanner.nextLine();
+
+                            if(!isValidTime(time)) {
+                                System.out.println("Invalid input");
+                                continue;
+                            }
                             System.out.println("Please enter your name: ");
                             String name = scanner.nextLine();
                             boolean succesfull = book(time, name);
@@ -87,6 +96,7 @@ public class ClinicScheduler {
                             }
                             System.out.println("Would you like to book another appointment? (Y/N): ");
                             String answer = scanner.nextLine();
+
 
                             if (answer.equalsIgnoreCase("N")) {
                                 break;
@@ -99,6 +109,12 @@ public class ClinicScheduler {
                     case 2: {
                         System.out.println("Please enter the time you would like to cancel appointment: ");
                         String time = scanner.nextLine();
+
+                        if(!isValidTime(time)) {
+                            System.out.println("Invalid input");
+                            continue;
+                        }
+
                         boolean cancelation = cancel(time);
                         if (cancelation) {
                             System.out.println("Appointment cancelled!");
@@ -111,7 +127,14 @@ public class ClinicScheduler {
                     }
                     case 3: {
                         System.out.println("Please enter time of the patients appointment: ");
+
                         String time = scanner.nextLine();
+
+                        if(!isValidTime(time)) {
+                            System.out.println("Invalid input");
+                            continue;
+                        }
+
                         if (!appointments.containsKey(time)) {
                             System.out.println("Appointment does not exist!");
                         } else {
@@ -123,8 +146,20 @@ public class ClinicScheduler {
                     case 4: {
                         System.out.println("Please enter the time of the patients appointment: ");
                         String Oldtime = scanner.nextLine();
+
+                        if(!isValidTime(Oldtime)) {
+                            System.out.println("Invalid input");
+                            continue;
+                        }
+
                         System.out.println("Please enter the time you would like to reschedule: ");
                         String time = scanner.nextLine();
+
+                        if(!isValidTime(time)) {
+                            System.out.println("Invalid input");
+                            continue;
+                        }
+
                         boolean succesfull = reschedule(Oldtime, time);
                         if (succesfull == true) {
                             System.out.println("Appointment rescheduled!");
